@@ -17,8 +17,6 @@
 #include "lua_extensions/lua_manager_extension.hpp"
 #include "lua_extensions/lua_module_ext.hpp"
 
-#include "Kismet/GameplayStatics.h"
-
 #include <codecvt>
 #include <gui/widgets/imgui_hotkey.hpp>
 #include <input/hotkey.hpp>
