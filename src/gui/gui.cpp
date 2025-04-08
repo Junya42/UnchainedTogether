@@ -17,6 +17,8 @@
 #include "lua_extensions/lua_manager_extension.hpp"
 #include "lua_extensions/lua_module_ext.hpp"
 
+#include "Kismet/GameplayStatics.h"
+
 #include <codecvt>
 #include <gui/widgets/imgui_hotkey.hpp>
 #include <input/hotkey.hpp>
@@ -60,6 +62,7 @@ namespace big
 
 	static std::optional<SDK::FVector> g_latest_saved_position{};
 	static hotkey g_chained_together_save_current_position("chained_together_save_current_position", VK_F5);
+	static hotkey g_chained_together_reset_run("chained_together_reset_run", VK_F8);
 	static hotkey g_chained_together_tp_to_latest_saved_position("chained_together_tp_to_latest_saved_position", VK_F6);
 	static bool g_chained_together_fly_mode_state = false;
 	static hotkey g_chained_together_fly_mode("chained_together_fly_mode", VK_F7);
@@ -386,6 +389,15 @@ namespace big
 	{
 		SDK::FVector pos{new_position.X, new_position.Y, new_position.Z};
 		SetPlayerPosition(Pawn, pos);
+	}
+
+	static void ResetRun()
+	{
+		auto world = SDK::UWorld::GetWorld();
+		if (!world)
+			return;
+		SDK::UGameplayStatics::OpenLevel(world, FName("/Game/Levels/SubLevels_02/Lobby_Sublevel"));
+		
 	}
 
 	template<typename T>
@@ -1176,6 +1188,7 @@ namespace big
 										SetPlayerPosition(Pawn, new_set_position);
 									}
 
+
 									ImGui::SeparatorText("JSON File");
 
 									// Load JSON file and display named positions
@@ -1308,6 +1321,8 @@ namespace big
 									}
 
 									ImGui::SeparatorText("Keybinds");
+
+									ImGui::Hotkey("Reset Run", g_chained_together_reset_run);
 
 									ImGui::Hotkey("Save Current Position", g_chained_together_save_current_position);
 
@@ -1500,6 +1515,11 @@ namespace big
 		if (msg == WM_KEYUP && wparam == g_chained_together_save_current_position.get_vk_value() && g_pawn)
 		{
 			g_latest_saved_position = g_pawn->GetTransform().Translation;
+		}
+
+		if (msg == WM_KEYUP && wparam == g_chained_together_reset_run.get_vk_value() && g_pawn)
+		{
+			ResetRun();
 		}
 
 		if (msg == WM_KEYUP && wparam == g_chained_together_tp_to_latest_saved_position.get_vk_value() && g_pawn && g_latest_saved_position)
