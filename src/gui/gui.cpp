@@ -816,7 +816,7 @@ namespace big
 					static int32_t perfect_bunny_color = 0;
 					perfect_bunny_color++;
 					perfect_bunny_color = perfect_bunny_color % 255;
-					draw_list->AddText(ImVec2(ImGui::GetIO().DisplaySize.x / 2.0f, ImGui::GetIO().DisplaySize.y * 0.075f), IM_COL32(perfect_bunny_color, 255, 255, 255), "Perfect Bunny");
+					//draw_list->AddText(ImVec2(ImGui::GetIO().DisplaySize.x / 2.0f, ImGui::GetIO().DisplaySize.y * 0.075f), IM_COL32(perfect_bunny_color, 255, 255, 255), "Perfect Bunny");
 				}
 
 				try
